@@ -187,6 +187,12 @@ body {
   outline: 1px solid var(--gold);
 }
 
+.field input::placeholder {
+  color: #4a463d;
+  opacity: 1;
+  font-style: italic;
+}
+
 .theme {
   margin: 0;
   padding: 0;
