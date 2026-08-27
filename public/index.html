@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scroll Site Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Outfit:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/studio.css" />
+  </head>
+  <body>
+    <div class="studio">
+      <aside class="panel">
+        <header class="brand">
+          <p class="brand__kicker">Scroll site</p>
+          <h1>Turn frames into a scroll-triggered page.</h1>
+          <p class="brand__lede">
+            Export stills with any free converter (or this project’s CLI), drop
+            them here, then download a clean site.
+          </p>
+        </header>
+
+        <form class="panel__form" id="studio-form">
+          <section class="block">
+            <div
+              class="drop"
+              id="drop"
+              tabindex="0"
+              role="button"
+              aria-label="Drop a folder or zip of frames"
+            >
+              <input
+                id="file-input"
+                class="sr-only"
+                type="file"
+                accept=".zip,image/webp,image/jpeg,image/png,.webp,.jpg,.jpeg,.png"
+                multiple
+              />
+              <input
+                id="dir-input"
+                class="sr-only"
+                type="file"
+                webkitdirectory
+                directory
+                multiple
+              />
+              <p class="drop__title">Drop a folder or zip</p>
+              <p class="drop__hint">Numbered frames · WebP, JPG, or PNG</p>
+              <div class="drop__actions">
+                <button type="button" class="btn btn--ghost" data-pick-files>
+                  Choose files
+                </button>
+                <button type="button" class="btn btn--ghost" data-pick-folder>
+                  Choose folder
+                </button>
+              </div>
+              <button type="button" class="text-btn" data-sample>
+                Or try sample frames
+              </button>
+            </div>
+            <p class="status" id="status" aria-live="polite"></p>
+            <div class="progress is-hidden" id="progress" aria-hidden="true">
+              <div class="progress__track">
+                <div class="progress__bar" id="progress-bar"></div>
+              </div>
+              <p class="progress__label" id="progress-label">Preparing…</p>
+            </div>
+          </section>
+
+          <section class="block">
+            <label class="field">
+              <span>Line one</span>
+              <input
+                id="caption-a"
+                type="text"
+                maxlength="80"
+                value="Experience the Extraordinary."
+              />
+            </label>
+            <label class="field">
+              <span>Line two</span>
+              <input
+                id="caption-b"
+                type="text"
+                maxlength="80"
+                value="Designed to inspire your everyday."
+              />
+            </label>
+            <label class="field">
+              <span>Closing line</span>
+              <input
+                id="caption-after"
+                type="text"
+                maxlength="100"
+                value="The sequence lives in the scroll. What comes next is yours."
+              />
+            </label>
+            <label class="field">
+              <span>Font</span>
+              <select id="font"></select>
+            </label>
+            <fieldset class="theme">
+              <legend>Background</legend>
+              <label>
+                <input type="radio" name="theme" value="dark" checked />
+                Dark
+              </label>
+              <label>
+                <input type="radio" name="theme" value="light" />
+                Light
+              </label>
+            </fieldset>
+          </section>
+
+          <button type="button" class="btn btn--gold" id="download" disabled>
+            Download site
+          </button>
+        </form>
+      </aside>
+
+      <section class="stage">
+        <div class="stage__empty" id="empty">
+          <p>Your scroll site will preview here.</p>
+        </div>
+        <iframe
+          id="preview"
+          class="stage__frame is-hidden"
+          title="Scroll site preview"
+        ></iframe>
+      </section>
+    </div>
+    <script type="module" src="./js/studio.js"></script>
+  </body>
+</html>

@@ -1,0 +1,297 @@
+:root {
+  --gold: #e4c56a;
+  --gold-soft: #f3e2a8;
+  --void: #070706;
+  --panel: #10100e;
+  --line: #24241f;
+  --ink: #9a917f;
+  --text: #ece7db;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--void);
+  color: var(--text);
+  font-family: Outfit, system-ui, sans-serif;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.studio {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) 1fr;
+  min-height: 100svh;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  padding: 1.8rem 1.5rem 2rem;
+  background: var(--panel);
+  border-right: 1px solid var(--line);
+}
+
+.brand__kicker {
+  margin: 0 0 0.7rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.brand h1 {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 2rem;
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.15;
+  color: var(--gold-soft);
+}
+
+.brand__lede {
+  margin: 0.8rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.panel__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.drop {
+  padding: 1.2rem 1rem;
+  border: 1px dashed #3a372e;
+  background: #0c0c0a;
+  text-align: center;
+  cursor: pointer;
+}
+
+.drop:focus-visible,
+.drop.is-over {
+  border-color: var(--gold);
+  outline: none;
+}
+
+.drop__title {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.drop__hint {
+  margin: 0.3rem 0 0.9rem;
+  font-size: 0.75rem;
+  color: var(--ink);
+}
+
+.drop__actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.status {
+  min-height: 1.2rem;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--ink);
+}
+
+.status.is-error {
+  color: #e8a090;
+}
+
+.progress {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.progress.is-hidden,
+.is-hidden {
+  display: none;
+}
+
+.progress__track {
+  height: 1px;
+  background: var(--line);
+}
+
+.progress__bar {
+  width: 0%;
+  height: 100%;
+  background: var(--gold);
+}
+
+.progress__label {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid var(--line);
+  background: #0c0c0a;
+  color: var(--text);
+  font-family: Outfit, system-ui, sans-serif;
+  font-size: 0.92rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: 1px solid var(--gold);
+}
+
+.theme {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.theme legend {
+  margin-bottom: 0.45rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.theme label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  font-family: Outfit, system-ui, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.btn--ghost {
+  padding: 0.45rem 0.7rem;
+}
+
+.btn--gold {
+  padding: 0.9rem 1rem;
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #16140e;
+  font-weight: 500;
+}
+
+.btn--gold:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.text-btn {
+  display: inline-block;
+  margin-top: 0.85rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--gold);
+  font-family: Outfit, system-ui, sans-serif;
+  font-size: 0.78rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.stage {
+  position: relative;
+  min-height: 100svh;
+  background: #050505;
+}
+
+.stage__empty {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  color: var(--ink);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}
+
+.stage__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #050505;
+}
+
+@media (max-width: 760px) {
+  .studio {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stage {
+    min-height: 80svh;
+  }
+}

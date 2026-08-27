@@ -1,0 +1,19 @@
+{
+  "total_frames": 240,
+  "start_number": 1,
+  "pad": 4,
+  "prefix": "frame_",
+  "extension": "webp",
+  "pattern": "frame_%04d.webp",
+  "first_frame": "frame_0001.webp",
+  "last_frame": "frame_0240.webp",
+  "format": "webp",
+  "width": 1280,
+  "height": 720,
+  "quality": 75,
+  "quality_requested": 75,
+  "fps": 23.988006,
+  "folder_size_mb": 4.7,
+  "source": "sample_interior_deco.mp4",
+  "max_mb": 8
+}

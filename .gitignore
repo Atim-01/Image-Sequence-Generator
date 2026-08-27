@@ -1,0 +1,11 @@
+node_modules/
+source/*
+!source/.gitkeep
+public/hero-sequence/*.webp
+output_frames/
+*.mp4
+*.mov
+*.webm
+*.mkv
+.DS_Store
+Thumbs.db

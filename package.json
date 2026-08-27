@@ -1,0 +1,19 @@
+{
+  "name": "image-sequence-generator",
+  "version": "1.1.0",
+  "description": "Turn a folder of frames into a GSAP ScrollTrigger site. Optional CLI extracts WebP sequences from video.",
+  "type": "module",
+  "bin": {
+    "extract-frames": "./scripts/extract-frames.js"
+  },
+  "scripts": {
+    "sequence": "node scripts/extract-frames.js",
+    "dev": "node scripts/preview.js",
+    "start": "node scripts/preview.js",
+    "test": "node --test tests/plan.test.js tests/studio.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}
