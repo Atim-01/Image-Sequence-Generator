@@ -8,12 +8,12 @@
   "first_frame": "frame_0001.webp",
   "last_frame": "frame_0240.webp",
   "format": "webp",
-  "width": 1280,
-  "height": 720,
-  "quality": 65,
+  "width": 800,
+  "height": 600,
+  "quality": 75,
   "quality_requested": 75,
-  "fps": 23.988006,
-  "folder_size_mb": 7.53,
-  "source": "testing.mp4",
+  "fps": 7.764478,
+  "folder_size_mb": 5.11,
+  "source": "test_video2.mp4",
   "max_mb": 8
 }

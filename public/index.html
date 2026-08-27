@@ -13,8 +13,30 @@
     <link rel="stylesheet" href="./css/studio.css" />
   </head>
   <body>
-    <div class="studio">
-      <aside class="panel">
+    <div class="studio" id="studio">
+      <aside class="panel" id="panel">
+        <div class="panel__toolbar">
+          <button
+            type="button"
+            class="icon-btn"
+            id="collapse-sidebar"
+            aria-controls="panel"
+            aria-expanded="true"
+            title="Collapse sidebar"
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M10.5 3.5 6 8l4.5 4.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span>Collapse sidebar</span>
+          </button>
+        </div>
         <header class="brand">
           <p class="brand__kicker">Scroll site</p>
           <h1>Turn frames into a scroll-triggered page.</h1>
@@ -122,7 +144,51 @@
         </form>
       </aside>
 
-      <section class="stage">
+      <button type="button" class="rail rail--west" id="expand-sidebar">
+        Show sidebar
+      </button>
+
+      <section class="stage" id="stage">
+        <div class="stage__toolbar">
+          <button
+            type="button"
+            class="icon-btn"
+            id="collapse-preview"
+            aria-controls="stage"
+            aria-expanded="true"
+            title="Collapse preview"
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M5.5 3.5 10 8 5.5 12.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span>Collapse</span>
+          </button>
+          <button
+            type="button"
+            class="icon-btn"
+            id="expand-preview"
+            title="Expand preview"
+          >
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M3 9.5V13h3.5M13 6.5V3H9.5M3 13l4-4M13 3 9 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span>Expand</span>
+          </button>
+        </div>
         <div class="stage__empty" id="empty">
           <p>Your scroll site will preview here.</p>
         </div>
@@ -132,6 +198,10 @@
           title="Scroll site preview"
         ></iframe>
       </section>
+
+      <button type="button" class="rail rail--east" id="expand-preview-rail">
+        Show preview
+      </button>
     </div>
     <script type="module" src="./js/studio.js"></script>
   </body>

@@ -1,5 +1,3 @@
-const MAX_DPR = 2;
-
 function sourceSize(img) {
   return {
     w: img.naturalWidth || img.width || 0,
@@ -11,28 +9,18 @@ export function createCoverCanvas(canvas) {
   const ctx =
     canvas.getContext("2d", {
       alpha: false,
-      desynchronized: true,
       colorSpace: "srgb",
     }) || canvas.getContext("2d", { alpha: false });
 
   let current = null;
   let lastIndex = -1;
 
-  function tuneContext(scale = 1) {
-    const downscale = scale < 0.995;
-    ctx.imageSmoothingEnabled = downscale;
-    ctx.imageSmoothingQuality = "high";
-  }
-
   function resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
-    const cssW = Math.max(1, window.innerWidth);
-    const cssH = Math.max(1, window.innerHeight);
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = Math.max(1, canvas.clientWidth);
+    const cssH = Math.max(1, canvas.clientHeight);
     const width = Math.max(1, Math.round(cssW * dpr));
     const height = Math.max(1, Math.round(cssH * dpr));
-
-    canvas.style.width = `${cssW}px`;
-    canvas.style.height = `${cssH}px`;
 
     if (canvas.width !== width || canvas.height !== height) {
       canvas.width = width;
@@ -41,7 +29,6 @@ export function createCoverCanvas(canvas) {
     }
 
     if (current) draw(current);
-    else tuneContext();
   }
 
   function coverRect(imgW, imgH, viewW, viewH) {
@@ -63,8 +50,10 @@ export function createCoverCanvas(canvas) {
     current = img;
     const { width, height } = canvas;
     const { scale, dx, dy, dw, dh } = coverRect(w, h, width, height);
-    tuneContext(scale);
-    ctx.drawImage(img, dx, dy, dw, dh);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.imageSmoothingEnabled = scale < 0.98 || scale > 1.02;
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, 0, 0, w, h, dx, dy, dw, dh);
   }
 
   function drawFrame(images, index) {
@@ -78,11 +67,21 @@ export function createCoverCanvas(canvas) {
 
   resize();
   window.addEventListener("resize", resize);
+  window.visualViewport?.addEventListener("resize", resize);
+  const observer =
+    typeof ResizeObserver === "function"
+      ? new ResizeObserver(() => resize())
+      : null;
+  observer?.observe(canvas);
 
   return {
     resize,
     draw,
     drawFrame,
-    destroy: () => window.removeEventListener("resize", resize),
+    destroy: () => {
+      window.removeEventListener("resize", resize);
+      window.visualViewport?.removeEventListener("resize", resize);
+      observer?.disconnect();
+    },
   };
 }

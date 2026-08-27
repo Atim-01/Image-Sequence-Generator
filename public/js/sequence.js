@@ -40,19 +40,7 @@ function loadImage(src) {
 }
 
 async function loadFrame(src) {
-  const img = await loadImage(src);
-  if (typeof createImageBitmap !== "function") return img;
-  try {
-    const bitmap = await createImageBitmap(img, {
-      premultiplyAlpha: "none",
-      colorSpaceConversion: "default",
-      resizeQuality: "high",
-    });
-    img.src = "";
-    return bitmap;
-  } catch {
-    return img;
-  }
+  return loadImage(src);
 }
 
 export async function preloadSequence(

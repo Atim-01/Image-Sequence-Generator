@@ -415,3 +415,45 @@ window.addEventListener("message", (event) => {
 });
 
 window.addEventListener("beforeunload", revokeUrls);
+
+const studio = document.querySelector("#studio");
+const collapseSidebarBtn = document.querySelector("#collapse-sidebar");
+const expandSidebarBtn = document.querySelector("#expand-sidebar");
+const collapsePreviewBtn = document.querySelector("#collapse-preview");
+const expandPreviewBtn = document.querySelector("#expand-preview");
+const expandPreviewRail = document.querySelector("#expand-preview-rail");
+
+function notifyPreviewLayout() {
+  requestAnimationFrame(() => {
+    const win = iframe.contentWindow;
+    if (!win) return;
+    win.dispatchEvent(new Event("resize"));
+    win.ScrollTrigger?.refresh();
+  });
+}
+
+function setLayout(mode) {
+  studio.classList.toggle("is-sidebar-collapsed", mode === "preview");
+  studio.classList.toggle("is-preview-collapsed", mode === "sidebar");
+  collapseSidebarBtn?.setAttribute("aria-expanded", String(mode !== "preview"));
+  collapsePreviewBtn?.setAttribute("aria-expanded", String(mode !== "sidebar"));
+  notifyPreviewLayout();
+}
+
+function currentLayout() {
+  if (studio.classList.contains("is-sidebar-collapsed")) return "preview";
+  if (studio.classList.contains("is-preview-collapsed")) return "sidebar";
+  return "split";
+}
+
+collapseSidebarBtn?.addEventListener("click", () => setLayout("preview"));
+expandSidebarBtn?.addEventListener("click", () => setLayout("split"));
+expandPreviewBtn?.addEventListener("click", () => setLayout("preview"));
+collapsePreviewBtn?.addEventListener("click", () => setLayout("sidebar"));
+expandPreviewRail?.addEventListener("click", () => setLayout("split"));
+
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && currentLayout() !== "split") {
+    setLayout("split");
+  }
+});
