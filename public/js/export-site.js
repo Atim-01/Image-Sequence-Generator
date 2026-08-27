@@ -1,5 +1,5 @@
 import { exportFrameName } from "./infer-manifest.js";
-import { DEFAULT_COPY, fontHref } from "./site-chrome.js";
+import { fontHref } from "./site-chrome.js";
 
 const ASSET_URLS = [
   ["css/hero.css", "./css/hero.css"],
@@ -19,13 +19,16 @@ export function escapeHtml(value) {
 }
 
 export function buildIndexHtml({
-  captionA = DEFAULT_COPY.captionA,
-  captionB = DEFAULT_COPY.captionB,
-  after = DEFAULT_COPY.after,
+  captionA = "",
+  captionB = "",
+  after = "",
   theme = "dark",
   font = "cormorant",
 } = {}) {
   const safeTheme = theme === "light" ? "light" : "dark";
+  const a = String(captionA).trim();
+  const b = String(captionB).trim();
+  const close = String(after).trim();
   return `<!DOCTYPE html>
 <html lang="en" data-theme="${safeTheme}">
   <head>
@@ -49,14 +52,14 @@ export function buildIndexHtml({
     <section id="hero" class="hero">
       <canvas id="hero-canvas" class="hero__canvas"></canvas>
       <div class="hero__copy">
-        <h1 class="hero__line" data-caption="a">${escapeHtml(captionA)}</h1>
-        <h1 class="hero__line" data-caption="b">${escapeHtml(captionB)}</h1>
+        <h1 class="hero__line${a ? "" : " is-empty"}" data-caption="a">${escapeHtml(a)}</h1>
+        <h1 class="hero__line${b ? "" : " is-empty"}" data-caption="b">${escapeHtml(b)}</h1>
       </div>
       <p class="hero__hint">Scroll</p>
     </section>
 
-    <section class="after" id="after">
-      <p>${escapeHtml(after)}</p>
+    <section class="after${close ? "" : " is-empty"}" id="after">
+      <p>${escapeHtml(close)}</p>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>

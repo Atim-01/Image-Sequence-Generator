@@ -18,8 +18,9 @@ export function createCoverCanvas(canvas) {
   let current = null;
   let lastIndex = -1;
 
-  function tuneContext() {
-    ctx.imageSmoothingEnabled = true;
+  function tuneContext(scale = 1) {
+    const downscale = scale < 0.995;
+    ctx.imageSmoothingEnabled = downscale;
     ctx.imageSmoothingQuality = "high";
   }
 
@@ -39,15 +40,16 @@ export function createCoverCanvas(canvas) {
       lastIndex = -1;
     }
 
-    tuneContext();
     if (current) draw(current);
+    else tuneContext();
   }
 
   function coverRect(imgW, imgH, viewW, viewH) {
     const scale = Math.max(viewW / imgW, viewH / imgH);
-    const dw = Math.ceil(imgW * scale);
-    const dh = Math.ceil(imgH * scale);
+    const dw = Math.round(imgW * scale);
+    const dh = Math.round(imgH * scale);
     return {
+      scale,
       dx: Math.round((viewW - dw) / 2),
       dy: Math.round((viewH - dh) / 2),
       dw,
@@ -60,7 +62,8 @@ export function createCoverCanvas(canvas) {
     if (!w || !h) return;
     current = img;
     const { width, height } = canvas;
-    const { dx, dy, dw, dh } = coverRect(w, h, width, height);
+    const { scale, dx, dy, dw, dh } = coverRect(w, h, width, height);
+    tuneContext(scale);
     ctx.drawImage(img, dx, dy, dw, dh);
   }
 

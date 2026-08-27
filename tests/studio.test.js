@@ -67,6 +67,20 @@ test("export HTML escapes copy and applies theme", () => {
   assert.equal(escapeHtml("<"), "&lt;");
 });
 
+test("empty overlay copy is omitted from the exported site", () => {
+  const html = buildIndexHtml({
+    captionA: "  ",
+    captionB: "",
+    after: "",
+    theme: "dark",
+  });
+  assert.doesNotMatch(html, /Experience the Extraordinary/);
+  assert.doesNotMatch(html, /Designed to inspire/);
+  assert.doesNotMatch(html, /What comes next is yours/);
+  assert.match(html, /data-caption="a" class="hero__line is-empty"|class="hero__line is-empty" data-caption="a"/);
+  assert.match(html, /class="after is-empty"/);
+});
+
 test("vendored fflate can zip and unzip site files", () => {
   const packed = zipSync({
     "index.html": strToU8(buildIndexHtml({ theme: "dark" })),

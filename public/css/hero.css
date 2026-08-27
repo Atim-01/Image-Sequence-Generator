@@ -7,7 +7,6 @@ html[data-theme="dark"] {
   --track: #1c1c1c;
   --hint: rgba(228, 197, 106, 0.55);
   --display-font: "Cormorant Garamond", Georgia, serif;
-  --canvas-filter: contrast(1.08) saturate(1.16) brightness(1.05);
   --copy-blend: plus-lighter;
 }
 
@@ -18,7 +17,6 @@ html[data-theme="light"] {
   --ink: #7a7266;
   --track: #e4dccb;
   --hint: rgba(61, 52, 35, 0.5);
-  --canvas-filter: none;
   --copy-blend: normal;
 }
 
@@ -94,7 +92,6 @@ body {
   width: 100%;
   height: 100%;
   transform: translateZ(0);
-  filter: var(--canvas-filter);
 }
 
 .hero__copy {
@@ -157,4 +154,9 @@ body {
   font-style: italic;
   text-align: center;
   color: var(--gold);
+}
+
+.hero__line.is-empty,
+.after.is-empty {
+  display: none;
 }

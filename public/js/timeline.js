@@ -40,15 +40,19 @@ export function createHeroTimeline({
 
   tl.to(state, { frame: introEnd, duration: 3.2 });
 
-  tl.to(captionA, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
-  tl.to({}, { duration: 0.55 });
-  tl.to(captionA, { opacity: 0, y: -12, duration: 0.35, ease: "power2.in" });
+  if (captionA && captionA.textContent.trim()) {
+    tl.to(captionA, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
+    tl.to({}, { duration: 0.55 });
+    tl.to(captionA, { opacity: 0, y: -12, duration: 0.35, ease: "power2.in" });
+  }
 
   tl.to(state, { frame: mid, duration: 3 });
 
-  tl.to(captionB, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
-  tl.to({}, { duration: 0.55 });
-  tl.to(captionB, { opacity: 0, y: -12, duration: 0.35, ease: "power2.in" });
+  if (captionB && captionB.textContent.trim()) {
+    tl.to(captionB, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
+    tl.to({}, { duration: 0.55 });
+    tl.to(captionB, { opacity: 0, y: -12, duration: 0.35, ease: "power2.in" });
+  }
 
   tl.to(state, { frame: lastFrame, duration: 3.4 });
 

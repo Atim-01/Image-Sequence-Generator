@@ -10,10 +10,10 @@
   "format": "webp",
   "width": 1280,
   "height": 720,
-  "quality": 75,
+  "quality": 65,
   "quality_requested": 75,
   "fps": 23.988006,
-  "folder_size_mb": 4.7,
-  "source": "sample_interior_deco.mp4",
+  "folder_size_mb": 7.53,
+  "source": "testing.mp4",
   "max_mb": 8
 }

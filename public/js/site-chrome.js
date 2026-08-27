@@ -48,6 +48,13 @@ export function fontFamily(fontId) {
   return (FONTS[fontId] ?? FONTS.cormorant).family;
 }
 
+function setCopy(el, text) {
+  if (!el) return;
+  const value = text == null ? "" : String(text);
+  el.textContent = value;
+  el.classList.toggle("is-empty", !value.trim());
+}
+
 export function applyChrome({
   theme = "dark",
   font = "cormorant",
@@ -64,14 +71,18 @@ export function applyChrome({
   if (link) link.href = fontHref(font);
 
   const lines = document.querySelectorAll(".hero__line");
-  if (captionA != null && lines[0]) lines[0].textContent = captionA;
-  if (captionB != null && lines[1]) lines[1].textContent = captionB;
+  if (captionA !== undefined) setCopy(lines[0], captionA);
+  if (captionB !== undefined) setCopy(lines[1], captionB);
 
+  const afterSection = document.querySelector("#after");
   const afterEl = document.querySelector("#after p");
-  if (after != null && afterEl) afterEl.textContent = after;
+  if (after !== undefined) {
+    setCopy(afterEl, after);
+    afterSection?.classList.toggle("is-empty", !String(after).trim());
+  }
 
   const hintEl = document.querySelector(".hero__hint");
-  if (hint != null && hintEl) hintEl.textContent = hint;
+  if (hint !== undefined) setCopy(hintEl, hint);
 }
 
 export function isStudioPreview() {

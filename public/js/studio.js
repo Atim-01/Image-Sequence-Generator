@@ -69,9 +69,9 @@ function copyFromForm() {
   const theme =
     document.querySelector('input[name="theme"]:checked')?.value ?? "dark";
   return {
-    captionA: fields.captionA.value.trim() || DEFAULT_COPY.captionA,
-    captionB: fields.captionB.value.trim() || DEFAULT_COPY.captionB,
-    after: fields.after.value.trim() || DEFAULT_COPY.after,
+    captionA: fields.captionA.value.trim(),
+    captionB: fields.captionB.value.trim(),
+    after: fields.after.value.trim(),
     font: fields.font.value || DEFAULT_COPY.font,
     theme,
   };
