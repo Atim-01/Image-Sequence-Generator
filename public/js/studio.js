@@ -262,32 +262,172 @@ async function ingest(rawFiles) {
 
 async function makeSampleFrames() {
   setProgress("Making sample frames…", 0.1);
-  const total = 36;
-  const width = 1280;
-  const height = 720;
+  const total = 48;
+  const width = 1600;
+  const height = 900;
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext("2d", { alpha: false });
+  const cx = width / 2;
+  const cy = height / 2 + 20;
   const files = [];
+
+  function rotX(p, a) {
+    const c = Math.cos(a);
+    const s = Math.sin(a);
+    return { x: p.x, y: p.y * c - p.z * s, z: p.y * s + p.z * c };
+  }
+  function rotY(p, a) {
+    const c = Math.cos(a);
+    const s = Math.sin(a);
+    return { x: p.x * c - p.z * s, y: p.y, z: p.x * s + p.z * c };
+  }
+  function project(p) {
+    const z = p.z + 640;
+    const s = 520 / z;
+    return { x: cx + p.x * s, y: cy + p.y * s, z, s };
+  }
+  function place(p, spin, tilt) {
+    return project(rotY(rotX(p, tilt), spin));
+  }
+
+  const pearls = [];
+  for (let j = 0; j < 14; j++) {
+    const u = (j / 14) * Math.PI * 2;
+    pearls.push({
+      x: 210 * Math.cos(u),
+      y: 18 * Math.sin(u * 2),
+      z: 210 * Math.sin(u),
+      r: 22 + (j % 3) * 5,
+      blush: j % 2 === 0,
+    });
+  }
+  for (let j = 0; j < 8; j++) {
+    const u = (j / 8) * Math.PI * 2 + 0.4;
+    pearls.push({
+      x: 320 * Math.cos(u),
+      y: -70 + 90 * Math.sin(u * 1.5),
+      z: 140 * Math.sin(u),
+      r: 12 + (j % 4) * 3,
+      blush: true,
+    });
+  }
+
+  function drawSphere(x, y, r, blush, depth) {
+    const falloff = Math.max(0.35, Math.min(1, 1.15 - depth / 1400));
+    const gx = x - r * 0.32;
+    const gy = y - r * 0.38;
+    const g = ctx.createRadialGradient(gx, gy, r * 0.08, x, y, r);
+    if (blush) {
+      g.addColorStop(0, `rgba(255, 248, 242, ${0.95 * falloff})`);
+      g.addColorStop(0.22, `rgba(255, 214, 204, ${0.95 * falloff})`);
+      g.addColorStop(0.62, `rgba(232, 154, 148, ${0.92 * falloff})`);
+      g.addColorStop(1, `rgba(92, 38, 48, ${0.92 * falloff})`);
+    } else {
+      g.addColorStop(0, `rgba(255, 249, 232, ${0.95 * falloff})`);
+      g.addColorStop(0.2, `rgba(244, 214, 140, ${0.95 * falloff})`);
+      g.addColorStop(0.58, `rgba(196, 150, 72, ${0.92 * falloff})`);
+      g.addColorStop(1, `rgba(62, 40, 18, ${0.92 * falloff})`);
+    }
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = g;
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(gx, gy, r * 0.22, r * 0.14, -0.5, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 255, 252, ${0.45 * falloff})`;
+    ctx.fill();
+  }
 
   for (let i = 0; i < total; i++) {
     const t = i / (total - 1);
-    ctx.fillStyle = "#070706";
+    const spin = t * Math.PI * 1.45;
+    const tilt = 0.42 + Math.sin(t * Math.PI) * 0.08;
+    const camLift = Math.sin(t * Math.PI) * 16;
+
+    const sky = ctx.createRadialGradient(cx, cy - 80, 40, cx, cy, 820);
+    sky.addColorStop(0, "#3a1824");
+    sky.addColorStop(0.45, "#160910");
+    sky.addColorStop(1, "#070506");
+    ctx.fillStyle = sky;
     ctx.fillRect(0, 0, width, height);
-    const x = width * (0.18 + t * 0.55);
-    const g = ctx.createRadialGradient(x, height * 0.52, 40, x, height * 0.52, 420);
-    g.addColorStop(0, `rgba(228, 197, 106, ${0.55 + t * 0.35})`);
-    g.addColorStop(1, "rgba(7, 7, 6, 0)");
-    ctx.fillStyle = g;
+
+    const bloom = ctx.createRadialGradient(cx, cy - 10, 20, cx, cy, 340);
+    bloom.addColorStop(0, "rgba(255, 186, 168, 0.28)");
+    bloom.addColorStop(0.45, "rgba(228, 197, 106, 0.1)");
+    bloom.addColorStop(1, "rgba(7, 5, 6, 0)");
+    ctx.fillStyle = bloom;
     ctx.fillRect(0, 0, width, height);
-    ctx.fillStyle = "#e4c56a";
-    ctx.fillRect(0, height - 8, Math.round(width * t), 8);
+
+    for (let d = 0; d < 40; d++) {
+      const seed = d * 17.17;
+      const px = ((seed * 73 + t * 90) % width);
+      const py = (seed * 47) % height;
+      const pr = 0.6 + (d % 4) * 0.4;
+      ctx.fillStyle = `rgba(255, 230, 210, ${0.08 + (d % 5) * 0.03})`;
+      ctx.beginPath();
+      ctx.arc(px, py, pr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.beginPath();
+    for (let k = 0; k <= 100; k++) {
+      const u = (k / 100) * Math.PI * 4 + spin * 0.35;
+      const p = {
+        x: 180 * Math.cos(u),
+        y: 52 * Math.sin(u * 0.75) - camLift,
+        z: 180 * Math.sin(u),
+      };
+      const q = place(p, spin, tilt);
+      if (k === 0) ctx.moveTo(q.x, q.y);
+      else ctx.lineTo(q.x, q.y);
+    }
+    ctx.strokeStyle = "rgba(244, 214, 140, 0.55)";
+    ctx.lineWidth = 7;
+    ctx.lineCap = "round";
+    ctx.stroke();
+    ctx.strokeStyle = "rgba(255, 236, 210, 0.85)";
+    ctx.lineWidth = 2.2;
+    ctx.stroke();
+
+    const sprites = pearls.map((pearl) => {
+      const q = place(
+        { x: pearl.x, y: pearl.y - camLift, z: pearl.z },
+        spin,
+        tilt
+      );
+      return { ...q, r: Math.max(4, pearl.r * q.s), blush: pearl.blush };
+    });
+    const core = place({ x: 0, y: -camLift, z: 0 }, spin, tilt);
+    sprites.push({
+      ...core,
+      r: Math.max(28, 78 * core.s),
+      blush: false,
+    });
+
+    sprites.sort((a, b) => b.z - a.z);
+    for (const ball of sprites) {
+      ctx.beginPath();
+      ctx.ellipse(ball.x, ball.y + ball.r * 0.85, ball.r * 0.7, ball.r * 0.18, 0, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(0, 0, 0, 0.22)";
+      ctx.fill();
+      drawSphere(ball.x, ball.y, ball.r, ball.blush, ball.z);
+    }
+
+    const veil = ctx.createLinearGradient(0, 0, 0, height);
+    veil.addColorStop(0, "rgba(7, 5, 6, 0.28)");
+    veil.addColorStop(0.35, "rgba(7, 5, 6, 0)");
+    veil.addColorStop(0.8, "rgba(7, 5, 6, 0)");
+    veil.addColorStop(1, "rgba(20, 8, 12, 0.45)");
+    ctx.fillStyle = veil;
+    ctx.fillRect(0, 0, width, height);
+
     const blob = await new Promise((resolve, reject) => {
       canvas.toBlob((result) => {
         if (result) resolve(result);
         else reject(new Error("Could not create sample frames in this browser."));
-      }, "image/jpeg", 0.72);
+      }, "image/jpeg", 0.88);
     });
     files.push(
       new File([blob], `frame_${String(i + 1).padStart(4, "0")}.jpg`, { type: "image/jpeg" })
